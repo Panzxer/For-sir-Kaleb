@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Happy Teacher's Day Sir Kaleb!</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+      user-select: none;
+    }
+
+   
+    #fx-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .vignette {
+      position: fixed;
+      inset: 0;
+      box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.85);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    #start-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(8, 10, 16, 0.85);
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 20;
+      transition: opacity 0.8s ease;
+    }
+
+    #start-btn {
+      padding: 18px 42px;
+      font-size: 1.3rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: #ffffff;
+      background: linear-gradient(135deg, #e056fd, #686de0);
+      border: none;
+      border-radius: 999px;
+      box-shadow: 0 8px 30px rgba(224, 86, 253, 0.45);
+      cursor: pointer;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    #start-btn:hover {
+      transform: scale(1.06);
+      box-shadow: 0 10px 40px rgba(224, 86, 253, 0.65);
+    }
+
+    #stage {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      z-index: 5;
+    }
+
+    #scroll-track {
+      position: absolute;
+      top: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+      width: 100%;
+      max-width: 800px;
+      will-change: transform;
+    }
+
+    .slide-item {
+      max-width: 90%;
+      max-height: 80vh;
+      object-fit: contain;
+      border-radius: 14px;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.6);
+      background: rgba(255, 255, 255, 0.04);
+      padding: 10px;
+    }
+
+    .outro-card {
+      width: 90%;
+      max-width: 650px;
+      padding: 48px 32px;
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 18px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .outro-card h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .outro-card p {
+      font-size: 1.15rem;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.85);
+      margin-bottom: 12px;
+    }
+
+    .outro-card .signature {
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.6);
+      font-style: italic;
+      margin-top: 20px;
+    }
+
+    #hud {
+      position: fixed;
+      bottom: 18px;
+      right: 20px;
+      font-size: 0.82rem;
+      color: rgba(255, 255, 255, 0.7);
+      background: rgba(0, 0, 0, 0.55);
+      padding: 8px 16px;
+      border-radius: 20px;
+      z-index: 10;
+      backdrop-filter: blur(4px);
+      pointer-events: none;
+      transition: background 0.2s ease;
+    }
+
+    #speed-indicator {
+      color: #e056fd;
+      font-weight: 600;
+      margin-left: 6px;
+    }
+  </style>
+</head>
+<body>
+
+
+  <canvas id="fx-canvas"></canvas>
+  <div class="vignette"></div>
+
+
+  <div id="start-overlay">
+    <button id="start-btn">Click to start Sir!!!</button>
+  </div>
+
+
+  <div id="stage">
+    <div id="scroll-track">
+      <img class="slide-item" src="intro.png" alt="Intro">
+      <img class="slide-item" src="messages/1.png" alt="Message 1">
+      <img class="slide-item" src="messages/2.png" alt="Message 2">
+      <img class="slide-item" src="messages/3.png" alt="Message 3">
+      <img class="slide-item" src="messages/4.png" alt="Message 4">
+      <img class="slide-item" src="messages/5.png" alt="Message 5">
+      <img class="slide-item" src="messages/6.png" alt="Message 6">
+      <img class="slide-item" src="messages/7.png" alt="Message 7">
+      <img class="slide-item" src="messages/8.png" alt="Message 8">
+      <img class="slide-item" src="messages/9.png" alt="Message 9">
+      <img class="slide-item" src="messages/10.png" alt="Message 10">
+      <img class="slide-item" src="messages/11.png" alt="Message 11">
+      <img class="slide-item" src="messages/12.jpg" alt="Message 12">
+      <img class="slide-item" src="messages/13.png" alt="Message 13">
+      <img class="slide-item" src="outro.png" alt="Outro">
+    </div>
+  </div>
+
+
+  <div id="hud">
+    ▲ Faster | ▼ Slower | Space: Pause <span id="speed-indicator">(1.0x)</span>
+  </div>
+
+  <audio id="bg-music" src="music.mp3" loop preload="auto"></audio>
+
+  <script>
+
+    const canvas = document.getElementById("fx-canvas");
+    const ctx = canvas.getContext("2d");
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2.2 + 0.8;
+        this.speedY = -(Math.random() * 0.45 + 0.2);
+        this.speedX = (Math.random() - 0.5) * 0.3;
+        this.opacity = Math.random() * 0.5 + 0.2;
+      }
+      update() {
+        this.y += this.speedY;
+        this.x += this.speedX;
+        if (this.y < 0) {
+          this.y = canvas.height;
+          this.x = Math.random() * canvas.width;
+        }
+      }
+      draw() {
+        ctx.fillStyle = `rgba(255, 230, 180, ${this.opacity})`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < 75; i++) {
+      particles.push(new Particle());
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+
+    const overlay = document.getElementById("start-overlay");
+    const track = document.getElementById("scroll-track");
+    const music = document.getElementById("bg-music");
+    const speedDisplay = document.getElementById("speed-indicator");
+
+    let currentY = window.innerHeight;
+    const baseSpeed = 0.85; 
+    let scrollSpeed = 0.85;
+    let isPlaying = false;
+
+    function updateSpeedHUD() {
+      const ratio = (scrollSpeed / baseSpeed).toFixed(1);
+      speedDisplay.textContent = `(${ratio}x)`;
+    }
+
+    function renderScroll() {
+      if (isPlaying) {
+        currentY -= scrollSpeed;
+        track.style.top = `${currentY}px`;
+
+        const trackHeight = track.offsetHeight;
+        if (currentY < -trackHeight) {
+          currentY = window.innerHeight;
+        }
+      }
+      requestAnimationFrame(renderScroll);
+    }
+
+
+    overlay.addEventListener("click", () => {
+      overlay.style.opacity = "0";
+      setTimeout(() => overlay.remove(), 800);
+
+      music.play().catch(err => console.log("Audio play error:", err));
+      isPlaying = true;
+      renderScroll();
+    });
+
+
+    window.addEventListener("keydown", (e) => {
+      if (overlay.parentNode) return; 
+
+      switch (e.code) {
+        case "ArrowUp":
+          e.preventDefault();
+          scrollSpeed = Math.min(scrollSpeed + 0.35, 4.5); 
+          updateSpeedHUD();
+          break;
+
+        case "ArrowDown":
+          e.preventDefault();
+          scrollSpeed = Math.max(scrollSpeed - 0.35, 0.15); 
+          updateSpeedHUD();
+          break;
+
+        case "ArrowRight":
+          e.preventDefault();
+          currentY -= 150;
+          track.style.top = `${currentY}px`;
+          break;
+
+        case "ArrowLeft":
+          e.preventDefault();
+          currentY += 150;
+          track.style.top = `${currentY}px`;
+          break;
+
+        case "Space":
+          e.preventDefault();
+          togglePlayPause();
+          break;
+      }
+    });
+
+    function togglePlayPause() {
+      if (music.paused) {
+        music.play();
+        isPlaying = true;
+      } else {
+        music.pause();
+        isPlaying = false;
+      }
+    }
+
+    window.addEventListener("click", (e) => {
+      if (!overlay.parentNode) {
+        togglePlayPause();
+      }
+    });
+  </script>
+</body>
+</html>
